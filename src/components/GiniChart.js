@@ -2,6 +2,7 @@ import React from "react";
 import { Bar, Line, Pie } from "react-chartjs-2";
 import { linearLine } from "../global";
 import T3 from "./typography/T3";
+import Status from "./dashboard/Status";
 
 function GiniChart(props) {
   const data = {
@@ -114,8 +115,11 @@ function GiniChart(props) {
   return (
     <div className={props.className}>
       {props.data ? (
-        <div style={{height: "90%"}}>
-          <T3>Gini Coefficient = {props.gini}</T3>
+        <div style={{ height: "90%" }}>
+          <div>
+            <T3>Gini Coefficient = {props.gini}</T3>
+            <Status gini={props.gini} />
+          </div>
           <br />
           <br />
           <Bar data={data} options={options} />
