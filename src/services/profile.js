@@ -11,14 +11,30 @@ export function getGini(Q, P, afterFunc) {
       )
       .then(
         response => {
-          afterFunc({success: true, ...response.data});
+          afterFunc({ success: true, ...response.data });
         },
         error => {
-          afterFunc({success: false, ...error});
+          afterFunc({ success: false, ...error });
         }
       )
       .catch(err => {
-        afterFunc({success: false, ...err});
+        afterFunc({ success: false, ...err });
       })
   );
+}
+
+export function postPropGap(entities, afterFunc) {
+  axios
+    .post(`${url}/api/property/gap`, { entities: entities })
+    .then(
+      response => {
+        afterFunc({ success: true, ...response.data });
+      },
+      error => {
+        afterFunc({ success: false, ...error });
+      }
+    )
+    .catch(err => {
+      afterFunc({ success: false, ...err });
+    });
 }

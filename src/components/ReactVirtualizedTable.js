@@ -65,16 +65,20 @@ class MuiVirtualizedTable extends React.PureComponent {
             : "left"
         }
       >
-        {columns[columnIndex].link ? (
-          <a
-            style={{ textDecoration: "none" }}
-            href={`https://www.wikidata.org/wiki/${cellData.link}`}
-          >
-            {cellData.label}
-          </a>
-        ) : (
-          cellData.label
-        )}
+        {columns[columnIndex].link
+          ? (() => {
+              return (
+                <a
+                  style={{ textDecoration: "none" }}
+                  href={cellData[columns[columnIndex].linkKey]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {cellData[columns[columnIndex].dataKey]}
+                </a>
+              );
+            })()
+          : cellData[columns[columnIndex].dataKey]}
       </TableCell>
     );
   };
@@ -83,7 +87,7 @@ class MuiVirtualizedTable extends React.PureComponent {
     if (typeof rowData.get === "function") {
       return rowData.get(dataKey);
     } else {
-      return { label: rowData[dataKey], link: rowData.entity };
+      return { ...rowData };
     }
   };
 
@@ -178,28 +182,9 @@ export default function ReactVirtualizedTable(props) {
     <div className={props.className}>
       <VirtualizedTable
         rowCount={rows.length}
+        rowHeight={50}
         rowGetter={({ index }) => rows[index]}
-        columns={[
-          {
-            width: 100,
-            label: "Percentile",
-            dataKey: "percentile",
-            numeric: true
-          },
-          {
-            width: 320,
-            label: "Entity",
-            dataKey: "label",
-            linkKey: "entity",
-            link: true
-          },
-          {
-            width: 120,
-            label: "# of Properties",
-            dataKey: "propertyCount",
-            numeric: true
-          }
-        ]}
+        columns={props.columns}
       />
     </div>
   );
