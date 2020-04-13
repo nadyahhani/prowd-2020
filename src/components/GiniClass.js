@@ -7,7 +7,7 @@ import Clue from "./dashboard/Clue";
 
 function GiniChart(props) {
   const data = {
-    type: "bar",
+    type: "line",
     labels: props.labels
       ? props.labels
       : ["10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%"],
@@ -41,15 +41,15 @@ function GiniChart(props) {
         pointHoverBackgroundColor: "#51945b",
         pointHoverBorderColor: "#51945b",
         id: "2"
-      },
-      {
-        data: props.data,
-        fill: false,
-        backgroundColor: "#71B37C",
-        borderColor: "#71B37C",
-        hoverBackgroundColor: "#71B37C",
-        hoverBorderColor: "#71B37C"
       }
+      // {
+      //   data: props.data,
+      //   fill: false,
+      //   backgroundColor: "#71B37C",
+      //   borderColor: "#71B37C",
+      //   hoverBackgroundColor: "#71B37C",
+      //   hoverBorderColor: "#71B37C"
+      // }
     ]
   };
 
@@ -98,7 +98,7 @@ function GiniChart(props) {
             style={{
               width: "40vh"
             }}
-            type="bar"
+            type="line"
             data={data}
             options={options}
           />

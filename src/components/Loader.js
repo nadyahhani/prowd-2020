@@ -23,10 +23,12 @@ const Loader = props => {
   const { promiseInProgress } = usePromiseTracker();
 
   React.useEffect(() => {
+    setState(s => ({ ...s, show: false }));
     setTimeout(() => {
       setState(s => ({ ...s, show: true }));
-    }, 3000);
-  }, []);
+    }, 5000);
+  }, [promiseInProgress]);
+
   return (
     promiseInProgress && (
       <div className={classes.root}>

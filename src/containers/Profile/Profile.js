@@ -140,6 +140,14 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between"
+  },
+  propGapDesc: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    height: "100%"
   }
 }));
 
@@ -170,6 +178,7 @@ function Profile(props) {
       } else {
         setState(s => ({
           ...s,
+          properties: "error",
           notif: {
             open: true,
             severity: "error",
@@ -178,6 +187,37 @@ function Profile(props) {
         }));
       }
     });
+  };
+
+  const propertyGap = () => {
+    if (state.properties === "error") {
+      return (
+        <div className={classes.propGapDesc}>
+          <T4>An error occured.</T4>
+          <br />
+          <Button onClick={() => getPropGap(state.entities)}>Try Again</Button>
+        </div>
+      );
+    } else if (state.properties && state.properties.length > 0) {
+      return (
+        <ReactVirtualizedTable
+          className={classes.tableProp}
+          rows={state.properties}
+          columns={propertiesCol}
+        />
+      );
+    } else if (state.properties && state.properties.length === 0) {
+      return (
+        <div className={classes.propGapDesc}>
+          <T4>There are no property gap</T4>{" "}
+        </div>
+      );
+    } else
+      return (
+        <div className={classes.propGapDesc}>
+          <CircularProgress />
+        </div>
+      );
   };
 
   const [state, setState] = React.useState({
@@ -365,7 +405,7 @@ function Profile(props) {
                   <T4>
                     The Gini coefficient has been used to show the imbalance of
                     certain domains of interest, such as inequality of income
-                    between countries and the inequality of contributions of
+                    within a single country and the inequality of contributions of
                     Wikipedia users.
                   </T4>
                   <br />
@@ -375,9 +415,16 @@ function Profile(props) {
                     The properties of each entity of the class is counted then
                     sorted in an ascending order, which then gets accumulated
                     from the smallest value to the largest. The Gini coefficient
-                    is the distance between the line of equality (orange) and
-                    the lorenz curve (dark green) which represents the
-                    accumulated entities.
+                    is the blue area which is the distance between the line of
+                    equality (orange) and the{" "}
+                    <a
+                      href="https://en.wikipedia.org/wiki/Lorenz_curve"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      lorenz curve
+                    </a>{" "}
+                    (dark green).
                   </T4>
                 </div>
               )}
@@ -407,25 +454,7 @@ function Profile(props) {
                   within the entities of the bottom 20%"
                     />
                   </div>
-                  {state.properties ? (
-                    <ReactVirtualizedTable
-                      className={classes.tableProp}
-                      rows={state.properties}
-                      columns={propertiesCol}
-                    />
-                  ) : (
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        width: "100%",
-                        height: "100%"
-                      }}
-                    >
-                      <CircularProgress />
-                    </div>
-                  )}
+                  {propertyGap()}
                 </div>
               </React.Fragment>
             ) : (
@@ -444,6 +473,19 @@ function Profile(props) {
                   data={giniEx[state.exData].data}
                   gini={giniEx[state.exData].gini}
                   insight={giniEx[state.exData].insight}
+                  labels={[
+                    "0%",
+                    "10%",
+                    "20%",
+                    "30%",
+                    "40%",
+                    "50%",
+                    "60%",
+                    "70%",
+                    "80%",
+                    "90%",
+                    "100%"
+                  ]}
                 />
                 <div
                   style={{
