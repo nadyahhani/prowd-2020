@@ -1,5 +1,5 @@
 // configurations
-const url = "https://gini-python-api.herokuapp.com";
+const url = "http://prowd.id:5000";
 
 // custom functions
 const linearLine = (begin, end, points) => {
